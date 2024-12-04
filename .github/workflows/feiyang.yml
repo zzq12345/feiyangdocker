@@ -18,7 +18,7 @@ jobs:
 
       - name: Run allinone container
         run: |
-          docker run --name allinone-container youshandefeiyang/allinone:34555
+          docker run --name allinone-container -d -p 34555:34555 youshandefeiyang/allinone
           
       - name: Copy tv.m3u file
         run: |
