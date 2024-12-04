@@ -18,8 +18,8 @@ jobs:
 
       - name: Run allinone container
         run: |
-          docker run --name allinone-container youshandefeiyang/allinone:35455
-          
+          docker run --name allinone -d -p 35455:35455 youshandefeiyang/allinone
+        
       - name: Copy tv.m3u file
         run: |
           docker cp allinone-container:/path/to/tv.m3u ./tv.m3u  # 修改路徑為實際的 tv.m3u 存放位置
