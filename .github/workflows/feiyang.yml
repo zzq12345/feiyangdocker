@@ -1,44 +1,30 @@
-name: Docker Container Workflow
+name: Docker Container Action
 
 on:
   push:
     branches:
-      - main
+      - main  # 當推送到主分支時觸發行動
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+      - name: Pull latest allinone image
+        run: docker pull youshandefeiyang/allinone:latest
 
-      - name: Pull Docker image
+      - name: Run allinone container
         run: |
-          docker pull youshandefeiyang/allinone:latest
-
-      - name: Run Docker container
+          docker run --name allinone-container youshandefeiyang/allinone:34555
+          
+      - name: Copy tv.m3u file
         run: |
-          docker run --name allinone_container -d youshandefeiyang/allinone:latest
+          docker cp allinone-container:/path/to/tv.m3u ./tv.m3u  # 修改路徑為實際的 tv.m3u 存放位置
 
-      - name: Wait for the container to generate tv.m3u
+      - name: Cleanup
         run: |
-          sleep 60  # 等待一段时间以确保文件生成，可以根据需要调整时间
-
-      - name: Copy tv.m3u from the container
-        run: |
-          docker cp allinone_container:/path/to/tv.m3u ./tv.m3u  # 替换为实际路径
-
-      - name: Stop and remove the container
-        run: |
-          docker stop allinone_container
-          docker rm allinone_container
-
-      - name: Upload tv.m3u as artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: tv.m3u
-          path: ./tv.m3u
+          docker stop allinone-container
+          docker rm allinone-container
