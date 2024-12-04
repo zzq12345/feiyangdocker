@@ -22,7 +22,7 @@ jobs:
         
       - name: Copy tv.m3u file
         run: |
-          docker cp http://127.0.0.1:35455tv.m3u ./tv.m3u  # 修改路徑為實際的 tv.m3u 存放位置
+          docker cp http://127.0.0.1:35455/tv.m3u ./tv.m3u  # 修改路徑為實際的 tv.m3u 存放位置
 
       - name: Cleanup
         run: |
